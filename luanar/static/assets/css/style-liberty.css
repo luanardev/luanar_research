@@ -9824,6 +9824,9 @@ h4.sub-title {
 
 .w3l-bootstrap-header .navbar-expand-lg .navbar-nav .dropdown-menu:before {
   content: '';
+  position: sticky;
+  top: 0;
+  z-index: 999;
   width: 10px;
   height: 10px;
   background: var(--white-color);
@@ -9832,10 +9835,9 @@ h4.sub-title {
   border-right: none;
   border-bottom: none;
   transform: translateX(-50%) rotateZ(45deg);
-  position: absolute;
   top: -6px;
   left: 49%;
-  z-index: 1001; }
+ }
 
 .w3l-bootstrap-header .dropdown-toggle::after {
   margin-left: 0.1em;
@@ -9966,7 +9968,10 @@ h4.sub-title {
     position: absolute;
     top: -5px;
     right: 12px;
-    z-index: 1001; } }
+    z-index: 1001;
+    position: sticky;
+    top: 0;
+    z-index: 999; } }
 
 @media (max-width: 569px) {
   .w3l-bootstrap-header nav.navbar {
@@ -10467,7 +10472,7 @@ h4.sub-title {
 .w3l-main-slider .banner-info-bg span.fa {
   color: var(--theme-color); }
 
-.w3l-main-slider ul.banner-ul span.fa {
+.w3l-main-slider ul.banner-ul span.fa { 
   color: var(--text-color); }
 
 .w3l-main-slider .banner-info-bg {
@@ -10491,7 +10496,7 @@ h4.sub-title {
   -ms-transition: 0.3s ease-in; }
 
 .w3l-main-slider .banner-view {
-  background: url(../images/2.jpg) no-repeat;
+  background: url(../images/BECC.jpg) no-repeat;
   background-size: cover;
   min-height: 600px;
   position: relative;
@@ -10500,15 +10505,15 @@ h4.sub-title {
   align-items: center; }
 
 .w3l-main-slider .banner-top1 {
-  background: url(../images/1.jpg) no-repeat;
+  background: url(../images/Gala.jpg) no-repeat;
   background-size: cover; }
 
 .w3l-main-slider .banner-top2 {
-  background: url(../images/3.jpg) no-repeat;
+  background: url(../images/LOVE.jpg) no-repeat;
   background-size: cover; }
 
 .w3l-main-slider .banner-top3 {
-  background: url(../images/4.jpg) no-repeat;
+  background: url(../images/Group.jpg) no-repeat;
   background-size: cover; }
 
 .w3l-main-slider .banner-view:before {
@@ -11275,7 +11280,7 @@ button.owl-next {
     margin-bottom: 20px; } }
 
 .services-12 .form-12-content {
-  background: url("../images/4.jpg") no-repeat center;
+  background: url("../images/complex1.jpg") no-repeat center;
   background-size: cover;
   padding: 5rem 0px;
   background-attachment: fixed;
@@ -11453,7 +11458,7 @@ button.owl-next {
 .w3l-customers-4 {
   /*-- customers4 block --*/ }
   .w3l-customers-4 #customers4-block {
-    background: url(../images/3.jpg) no-repeat center;
+    background: url(../images/Group.jpg) no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -11995,6 +12000,16 @@ button.owl-next {
   width: 85%;
   color: #fff;
   border-radius: 0.25rem 0 0 0.25rem; }
+
+  .w3l-footer-29-main .footer-29 .subscribe input[type="text"] {
+    background: rgba(26, 68, 116, 0.55);
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    outline: none;
+    width: 85%;
+    color: #fff;
+    border-radius: 0.25rem 0 0 0.25rem; }
 
 .w3l-footer-29-main .footer-29 .subscribe button {
   text-align: center;
@@ -13405,7 +13420,7 @@ button.owl-next {
 
 .w3l-about-breadcrum .breadcrum-bg {
   background-size: cover;
-  background-image: linear-gradient(to right, rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.8)), url(../images/3.jpg);
+  background-image: linear-gradient(to right, rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.8)), url(../images/food.jpg);
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: center;
   background-attachment: fixed; }

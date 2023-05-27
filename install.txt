@@ -1,0 +1,6 @@
+django-appconf==1.0.5
+django-compressor==2.4
+django-cors-headers==3.13.0
+django3-livesync==1
+djangorestframework==3.14.0
+djangorestframework-jsonapi==6.0.0
