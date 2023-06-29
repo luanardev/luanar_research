@@ -22,12 +22,12 @@
                    <a href="#">
 				    <div class="float-top col-lg-12 col-md-2 mt-md-0 mt-5" style="background: lavenderblush; padding: 8px; border-radius: 4px">
                      <div style="float: left; padding: 8px; border-radius: 6px">
-						<a href="#"><img src="{% static 'assets/images/researcher_default.png' %}" class="img-responsive" alt="" width='40'></a>
+						<a href="{% url 'researcher_publications' author.id %}"><img src="{% static 'assets/images/researcher_default.png' %}" class="img-responsive" alt="" width='40'></a>
                     </div>
                     <div style="padding: 8px">
                         <div class="float-lt feature-gd">
                             <p></p>
-							<h5 style="font-size: 12px"><a href="#" style="float: left"><b>{{author.first_name}} {{author.last_name}}</b></a></h5><br/>
+							<h5 style="font-size: 12px"><a href="{% url 'researcher_publications' author.id %}" style="float: left"><b>{{author.first_name}} {{author.last_name}}</b></a></h5><br/>
 							<h5 style="font-size: 12px"><a href="#" style="float: left">Position: {{author.position}}</a></h5><br/>
 						</div>
                     </div>

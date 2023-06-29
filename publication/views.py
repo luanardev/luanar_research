@@ -68,6 +68,13 @@ class ResearchersView(ListView):
         return queryset
 
 researchers_list_view = ResearchersView.as_view()
+
+def get_author_publications(request, author_id):
+    author = get_object_or_404(User, id=author_id)
+    researcher_publications = Publication.objects.filter(author=author)
+    context = {'researcher_publications': researcher_publications}
+
+    return render(request,'core/researcher_publications.html', context)
     
 # Api
 class PublicationsAPIView(APIView):
