@@ -99,7 +99,7 @@ class UploadPublicationView(LoginRequiredMixin, View):
                         publication_type=publication_type,author_id=author_id,co_authors=co_authors,
                         number_of_pages=number_of_pages,volume=volume,project_id=project_id)
             publication.save()
-            return render(request, 'research/all_publications.html')
+            return redirect('publication_list')
         return render(request, 'research/add_publication.html')
     
 upload_publication_view = UploadPublicationView.as_view()

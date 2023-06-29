@@ -25,6 +25,3 @@ class UserProfile(models.Model):
     qualification = models.CharField(max_length=250)
     bio = models.TextField()
     image = models.ImageField(upload_to='profiles/')
-
-    def __str__(self):
-        return self.user
