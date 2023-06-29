@@ -19,19 +19,29 @@
 		<div class="container py-md-3">
 		<div class="fea-gd-vv text-center row">
 				{% for author in page_obj %} 
-				    <div class="float-top col-lg-2 col-md-2 mt-md-0 mt-5">		
-						<a href="#"><img src="{% static 'assets/images/researcher_default.png' %}" class="img-responsive" alt=""></a>
-						<div class="float-lt feature-gd">	
-							<h5><a href="#">{{author.first_name}} {{author.last_name}}</a> </h5><br/>
+                   <a href="#">
+				    <div class="float-top col-lg-12 col-md-2 mt-md-0 mt-5" style="background: lavenderblush; padding: 8px; border-radius: 4px">
+                     <div style="float: left; padding: 8px; border-radius: 6px">
+						<a href="#"><img src="{% static 'assets/images/researcher_default.png' %}" class="img-responsive" alt="" width='40'></a>
+                    </div>
+                    <div style="padding: 8px">
+                        <div class="float-lt feature-gd">
+                            <p></p>
+							<h5 style="font-size: 12px"><a href="#" style="float: left"><b>{{author.first_name}} {{author.last_name}}</b></a></h5><br/>
+							<h5 style="font-size: 12px"><a href="#" style="float: left">Position: {{author.position}}</a></h5><br/>
 						</div>
+                    </div>
+						
 					</div>
+                    </a>
+            <p style="color:aliceblue">.</p>
 				{% endfor %}	
 			</div>  
 		</div>
 	</div>
-
 	<!-- pagination -->
-	{% comment %} <div class="pagination">
+	{% comment %} 
+   <div class="pagination">
 		<ul>
 			<li>
 				{% if page_obj.has_previous %}
@@ -60,7 +70,7 @@
 			</li>
 		</ul>
 	</div> {% endcomment %}
-</section>
+
 
 {% else %}
 {% endif %} 
