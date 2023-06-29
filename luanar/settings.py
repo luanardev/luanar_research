@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'project.apps.ProjectConfig',
     'innovation.apps.InnovationConfig',
     'subscription.apps.SubscriptionConfig',
+    'oauth.apps.OauthConfig',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -89,8 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'luanar',
-        'USER': 'postgres',
-	    'PASSWORD': 'password',
+        'USER': 'luanar',
+	    'PASSWORD': 'Mwala?2022',
 	    'HOST':  'localhost'
     }
 }

@@ -2,63 +2,29 @@ from django.db import models
 from datetime import datetime
 from django.db.models import DO_NOTHING
 import uuid
+from account.models import User
 
 # Create your models here.
-class Donor(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    contact_address = models.TextField()
-    contact_number = models.IntegerField()
-    country = models.CharField(max_length=255)
-    description = models.TextField()
-    created_at = models.DateTimeField(default=datetime.now)
-
-    def __str__(self):
-        return f"{self.name}"
-
-class Partner(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    created_at = models.DateTimeField(
-        default=datetime.now)
-
-    def __str__(self):
-        return f"{self.name}"
-
-class Role(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4) 
-    name = models.CharField(max_length=255)
-    created_at = models.DateTimeField(
-        default=datetime.now)
-
-    def __str__(self):
-        return f"{self.name}"
-
-class Member(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    title = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
-    role = models.OneToOneField(Role, on_delete=DO_NOTHING)
-    created_at = models.DateTimeField(
-        default=datetime.now)
-
-    def __str__(self):
-        return f"{self.first_name}"
-
 class Project(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    donor = models.ManyToManyField(Donor)
-    partner = models.ManyToManyField(Partner)
-    member = models.ManyToManyField(Member)
-    title = models.CharField(max_length=255)
+    id            = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    user          = models.ForeignKey(User, on_delete=DO_NOTHING,blank=True, null=True)
+    title         = models.CharField(max_length=255)
+    total_value    = models.FloatField(blank=True, null=True)
+    project_status = models.CharField(max_length=255,blank=True, null=True)
+    project_type   = models.CharField(max_length=255,blank=True, null=True)
+    project_pi = models.CharField(max_length=255,blank=True, null=True)
+    project_co_pi = models.CharField(max_length=255,blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
+    date_from = models.DateField(blank=True, null=True)
+    expected_completion_date = models.DateField(blank=True, null=True)
+    project_member = models.TextField(blank=True, null=True)
+    project_donor = models.TextField(blank=True, null=True)
+    project_partner = models.TextField(blank=True, null=True)
     description = models.TextField()
-    file_name = models.FileField(upload_to='project_documents/%Y/%m/%d/', blank=True)
-    created_at = models.DateTimeField(
-        default=datetime.now)
+    supporting_document = models.FileField(upload_to='project_documents/%Y/%m/%d/', blank=True, null=True)
+    image_path = models.ImageField(upload_to='projects/', blank=True, null=True)
+    created_at = models.DateTimeField(default=datetime.now)
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}"

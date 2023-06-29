@@ -3,6 +3,7 @@ from django.db.models import DO_NOTHING
 from datetime import datetime
 import uuid
 from account.models import User
+from project.models import Project
 
 # Create your models here.    
 class Publication(models.Model):
@@ -21,6 +22,8 @@ class Publication(models.Model):
     collection = models.CharField(max_length=255)
     doi = models.CharField(max_length=255, unique=True)
     is_approved = models.BooleanField(default=False)
+    image_path = models.ImageField(upload_to='publication/', blank=True, null=True)
+    project = models.ForeignKey(Project, on_delete=DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(default=datetime.now)
     
     def __str__(self):

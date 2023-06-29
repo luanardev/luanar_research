@@ -5,9 +5,10 @@ from .views import (
     PublicationsView,PublicationDetails)
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
-    path('publication/', PublicationsView.as_view(), name='publications'),
-    path('publication-details/<uuid:pk>', PublicationDetails.as_view(), name='publication-details'),
+    path('', views.index, name='index'),
+    path('publications/', PublicationsView.as_view(), name='publications'),
+    path('publication_details/<uuid:pk>/', PublicationDetails.as_view(), name='publication_details'),
+    path('researchers/', views.researchers_list_view, name='researchers'),
 
     path('api/publication/', views.publications_api_view, name='home'),
     # path('api/collection/<uuid:pk>', CollectionDetails.as_view(), name='collection_details'),

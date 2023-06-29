@@ -4,8 +4,6 @@ from .views import ( InnovationsView, InnovationDetails)
 
 urlpatterns = [
     
-    path('', InnovationsView.as_view(), name='innovations'),
-    path('innovation-details/<uuid:pk>', InnovationDetails.as_view(), name='innovation-details'),
-
-    
+    path('innovations/', InnovationsView.as_view(), name='innovations'),
+    path('innovation_details/<uuid:pk>/', InnovationDetails.as_view(), name='innovation_details'),
 ]

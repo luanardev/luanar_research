@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, ListView
 from django.urls import reverse
 from django.views import View
 from django.contrib import messages, auth
@@ -35,6 +35,6 @@ class LogoutView(RedirectView):
     def get_redirect_url(self):
         logout(self.request)
         messages.success(self.request, 'You are now logged out')
-        return reverse('sign-in')
+        return reverse('index')
 
 logout_view = LogoutView.as_view()

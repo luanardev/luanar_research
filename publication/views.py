@@ -3,20 +3,44 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializer import PublicationSerializer
 from .models import Publication
+from project.models import Project
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views import View
 import uuid
 from django.utils.html import strip_tags
+# from django.core.paginator import Paginator
+from account.models import User
 
 # Create your views here.
 # web
-class IndexView(TemplateView):
-    template_name ='publication/index.html'
+def index(request):
+    html = '<jats:p>'
+    stripped = strip_tags(html)
+    publications = Publication.objects.order_by('-created_at').filter(is_approved=True)[:2]
+    projects = Project.objects.order_by('-created_at').filter(is_approved=True)[:3]
+    context = {
+        'publications': publications,
+        'projects': projects
+    }
+
+    return render(request,'core/index.html',context)
+
+
+class IndexView(ListView):
+    html = '<jats:p>'
+    stripped = strip_tags(html)
+    template_name ='core/index.html'
+    model = Publication
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     queryset = queryset.filter(is_approved=True)
+    #     return queryset
 
 class PublicationsView(ListView):
     html = '<jats:p>'
     stripped = strip_tags(html)
-    template_name = 'publication/publications.html'
+    template_name = 'core/publications.html'
     model = Publication
     paginate_by = 3
 
@@ -29,9 +53,21 @@ class PublicationDetails(DetailView):
     html = '<jats:p>'
     stripped = strip_tags(html)
     
-    template_name = 'publication/publication-details.html'
+    template_name = 'core/publication_details.html'
     context_object_name = 'publication'
     queryset = Publication.objects.all()
+
+class ResearchersView(ListView):
+    model = User
+    template_name = 'core/researchers.html'
+    paginate_by = 8
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(publication__isnull=False).distinct()  # Fetch related authors
+        return queryset
+
+researchers_list_view = ResearchersView.as_view()
     
 # Api
 class PublicationsAPIView(APIView):
@@ -67,3 +103,13 @@ class PublicationDetailsAPIView(APIView):
 
 publications_details_api_view = PublicationDetailsAPIView.as_view()
 
+
+# def researchers_list_view(request):
+#     author_list = User.objects.filter(publication__isnull=False).distinct()
+#     # Retrieve all authors who have publications
+#     paginator = Paginator(author_list, 6)  # Show 6 authors per page
+
+#     page_number = request.GET.get('page')
+#     authors = paginator.get_page(page_number)
+
+#     return render(request, 'researchers/researchers.html', {'authors': authors})

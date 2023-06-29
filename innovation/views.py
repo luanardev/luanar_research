@@ -13,7 +13,7 @@ import uuid
 
 
 class InnovationsView(ListView):
-    template_name = 'innovation/innovations.html'
+    template_name = 'core/innovations.html'
     model = Innovation
     paginate_by = 3
     def get_context_data(self,*args, **kwargs):
@@ -22,6 +22,6 @@ class InnovationsView(ListView):
         return context
 
 class InnovationDetails(DetailView):
-    template_name = 'innovation/innovation-details.html'
+    template_name = 'core/innovation_details.html'
     context_object_name = 'innovation'
     queryset = Innovation.objects.all()

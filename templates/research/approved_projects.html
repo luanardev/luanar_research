@@ -1,4 +1,5 @@
-{% extends 'research/base.html' %} {% block content %}
+{% extends 'research/base.html' %}{% load static %}
+{% load humanize %} {% block content %}
 
 <div class="col-lg-12">
     <div class="page-section">
@@ -31,39 +32,39 @@
               <thead class="thead-">
                 <tr>
                   <th>#</th>
-                  {% comment %} <th>Submitted By</th> {% endcomment %}
-                  <th>Author</th>
+                  <th>Project Lead</th>
                   <th>Title</th>
-                  <th>Publication Type</th>
-                  <th>Journal Name</th>
-                  <th>Publisher</th>
-                  <th>Doi</th>
+                  <th>Project Type</th>
+                  <th>Project Status</th>
+                  <th>Total Value</th>
+                  <th>Status</th>
                   <th>action</th>
                 </tr>
               </thead><!-- /thead -->
               <!-- tbody -->
               <tbody>
-                  {% for publication in object_list %}
+                  {% for project in object_list %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ publication.author.first_name }} 
-                        {{ publication.author.last_name}}</td>
-                    {% comment %} <td>{{ publication.author.first_name }} 
-                        {{ publication.author.last_name}}, 
-                        {{ publication.co_authors }}
-                    </td> {% endcomment %}
-                    <td>{{ publication.title }}</td>
-                    <td>{{ publication.publication_type }}</td>
-                    <td>{{ publication.journal_name }}</td>
-                    <td>{{ publication.publisher }}</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ project.project_pi }}</td>
+                  <td>{{ project.title}} 
+                  <td> {{ project.project_type}}</td>
+                  <td>{{ project.project_status }}</td>
+                  <td>$ {{ project.total_value | intcomma }}</td>
+                  <td>
+                    {% if project.is_approved == False %}
+                      <span style='color:red;font-size:11px;font-weight:bold;'>Not Approved</span>
+                    {% else %}
+                      <span style='color:green;font-size:11px;font-weight:bold;'>Approved</span>
+                    {% endif %}
+                   </td>
                     <td>
-                        <a href="http://dx.doi.org/{{ publication.doi }}"target="_blank">
-                        {{ publication.doi }}</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'publication' publication.id %}" class="btn btn-sm btn-icon">
-                           <i class="fa fa-eye"></i> <span class="sr-only">View</span>
-                        </a>
+                      <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-icon btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-ellipsis-h"></i></button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <div class="dropdown-arrow mr-n1"></div> 
+                          <a href="{% url 'research_project' project.id %}" class="dropdown-item">View</a> 
+                        </div>
                     </td>
                   </tr>
                   {% endfor %}
@@ -76,7 +77,7 @@
     {% else %}
     <div class="col-lg-12">
         <div class="alert alert-danger alert-dismissible fade show">
-        Approved Publications not found
+          You do not have any approved research project.
         </div>
     </div>
              <!-- /.card -->

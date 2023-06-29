@@ -16,20 +16,40 @@ z-index: 999;">
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
+          <li  {% if '/' == request.path %}
+                class="nav-item active"
+            {% else %}
+                class="nav-item"
+            {% endif %} >
             <a class="nav-link" href="{% url 'index' %}">Home</a>
           </li>
-          <li class="nav-item">
+          <li {% if 'projects' in request.path or 'project_details' in request.path %}
+              class="nav-item active"
+            {% else %}
+                class="nav-item"
+            {% endif %}>
             <a class="nav-link" href="{% url 'projects' %}">Projects</a>
           </li>
-          <li class="nav-item">
+          <li {% if 'innovations' in request.path or 'innovation_details' in request.path  %}
+            class="nav-item active"
+          {% else %}
+              class="nav-item"
+          {% endif %}>
             <a class="nav-link" href="{% url 'innovations' %}">Innovations</a>
           </li>
-          <li class="nav-item">
+          <li {% if 'publications' in request.path or 'publication_details' in request.path %}
+              class="nav-item active"
+            {% else %}
+                class="nav-item"
+            {% endif %}>
             <a class="nav-link" href="{% url 'publications' %}">Publications</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">Researchers</a>
+          <li {% if 'researchers' in request.path %}
+              class="nav-item active"
+            {% else %}
+                class="nav-item"
+            {% endif %}>
+            <a class="nav-link" href="{% url 'researchers' %}">Researchers</a>
           </li>
         </ul>
         <form action="https://demo.w3layouts.com/demos_new/template_demo/29-02-2020/master-liberty-demo_Free/389771183/web/search-results.html" class="form-inline position-relative my-2 my-lg-0">
