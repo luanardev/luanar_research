@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'project.apps.ProjectConfig',
     'innovation.apps.InnovationConfig',
+    'events.apps.EventsConfig',
     'subscription.apps.SubscriptionConfig',
     'oauth.apps.OauthConfig',
     'django.contrib.humanize',

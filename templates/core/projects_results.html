@@ -5,55 +5,26 @@
 {% block content %}
 
 
-
 <section class="w3l-about-breadcrum">
   <div class="breadcrum-bg py-sm-5 py-4">
     <div class="container py-lg-3">
       <h2>Projects</h2>
-      <p><a href="{% url 'index' %}">Home</a> &nbsp; / &nbsp; Projects</p>
+      <p>Search Results</p>
     </div>
   </div>
 </section>
 
-{% if page_obj %}
-<section class="w3l-blog-single">
+	<section class="w3l-blog-single">
 	<div class="single blog py-4">
 		<div class="container py-md-2">
 		<div class="d-grid grid-colunm-2">
 			<!-- left side blog post content -->
-		<div class="single-left">
-				<form class="form-inline search-form mb-3" action="{% url 'projects_search' %}" method="get">
-					
-					<input
-						class="form-control"
-						type="search"
-						name="query"
-						placeholder="Search here"
-						aria-label="search"
-						required=""
-					/>
-					<button class="btn search" type="submit">
-						<span class="fa fa-search"></span>
-					</button>
-				</form>
+		<div class="single-left py-4">
+				
 		
-			{% for project in page_obj %}
+			{% for project in projects %}
 			<div class="single-left1">
-				{% if project.image_path %}
-					<div class="blg-img">
-						<a href="#"><img src="{{project.image_path.url}}" alt=" " class="img-responsive img-fluid">
-						<div class="bl-top">
-							<h4>{{project.date_from}}</h4>	
-						</div></a>
-					</div>
-				{% else %}
-					<div class="blg-img">
-						<a href="#"><img src="{% static 'assets/images/project_default.jpg' %}" alt=" " class="img-responsive img-fluid">
-						<div class="bl-top">
-							<h4>{{project.date_from}}</h4>	
-						</div></a>
-					</div>
-				{% endif %}
+				
 				
 					<div class="btom-cont">
 						<h5 class="card-title">
@@ -82,9 +53,9 @@
 			<div class="pagination">
 				<ul>
 				<li>
-					{% if page_obj.has_previous %}
+					{% if projects.has_previous %}
 						<a
-						href="?page={{ page_obj.previous_page_number }}"
+						href="?page={{ projects.previous_page_number }}"
 						class="not-allowed"
 						disabled=""
 						>
@@ -96,11 +67,11 @@
 					{% endif %}
 				</li>
 				<li>
-					<a class="active" href="#"> {{ page_obj.number }} </a>
+					<a class="active" href="#"> {{ projects.number }} </a>
 				</li>
 				<li>
-					{% if page_obj.has_next %}
-						<a href="?page={{ page_obj.next_page_number }}">
+					{% if projects.has_next %}
+						<a href="?page={{ projects.next_page_number }}">
 						<span
 							class="fa fa-angle-double-right"
 							aria-hidden="true"
@@ -156,10 +127,7 @@
 		</div>
 		</div>
 	</div>
-</section>
+	</section>
 	<!-- grids block 5 -->
-{% else %}
-{% endif %} 
-<!-- //features -->
 
 {% endblock %}

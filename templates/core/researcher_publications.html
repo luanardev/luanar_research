@@ -3,7 +3,8 @@
 <section class="w3l-about-breadcrum">
   <div class="breadcrum-bg py-sm-5 py-4">
     <div class="container py-lg-3">
-      <h2>Publications</h2>
+      {% comment %} <h2>{{ researcher_publication.author.first_name }} 
+          {{ researcher_publication.author.last_name }} Publications</h2> {% endcomment %}
       <p>
         <a href="{% url 'index' %}">Home</a> &nbsp; / Researcher&nbsp;
         Publications
@@ -19,47 +20,51 @@
         <!-- left side blog post content -->
         <div class="single-left">
           <div class="single-left1">
+
             {% for researcher_publication in researcher_publications %}
-            <div class="column-6">
-              <img
-                src="{% static 'assets/images/pub_default.jpg' %}"
-                alt=""
-                class="img-fluid"
-              />
-            </div>
             <div class="btom-cont">
-              <h5 class="card-title">{{researcher_publication.publication_type|upper}} -
+              <h5 class="card-title">
                 <a href="{% url 'publication_details' researcher_publication.id %}"
-                >{{ researcher_publication.title }}</a>
+                >{{ researcher_publication.title |lower }}</a
+                >
               </h5>
-             
               <ul class="admin-post">
                 <li>
-                  <a href="#">AUTHOR: &nbsp;{{researcher_publication.author.first_name}}
-                     {{researcher_publication.author.last_name}}
-                    </a> 
+                <a href=""
+                  >{{ researcher_publication.publication_type |upper}}</a
+                >
                 </li>
                 <li>
-                  <a href="#">YEAR OF PUBLICATION:&nbsp;
-                    {{researcher_publication.year_of_publication}}</a>
-                </li><br/>
+                <a href=""
+                  class="text-bl">{{ researcher_publication.author.first_name }} 
+                  {{ researcher_publication.author.last_name }}</a
+                >
+                </li>
                 <li>
-              <ul><br/><hr/>
-              <p class="">
-                {{ researcher_publication.abstract | truncatewords:30| striptags}}.
-              </p>
-              <a
-                href="{% url 'publication_details' researcher_publication.id %}"
+                <a href=""
+                  >{{ researcher_publication.co_authors }}</a
+                >
+                </li>
+              </ul>
+              {% comment %} <p class="">{{ publication.abstract | striptags | truncatewords:30}}.</p> {% endcomment %}
+              <div class="float-lt feature-gd col-lg-4 col-md-6">
+                <div class="icon-info">
+                <a href="{% url 'publication_details' researcher_publication.id %}" class="red mt-3">
+                  Read More <span class="fa fa-angle-right pl-1"></span></a>
+                </div>
+              </div>
+              {% comment %} <a
+                href="{% url 'publication_details' publication.id %}"
                 class="btn btn-theme2 mt-3"
                 >Continue Reading</a
-              >
-            </div>
-            <br />
-            {% endfor %}
+              > {% endcomment %}
+              </div><br />
+
+           {% endfor %}
           </div>
 
           <!-- pagination -->
-          <div class="pagination">
+          {% comment %} <div class="pagination">
             <ul>
               <li>
                 {% if page_obj.has_previous %}
@@ -89,8 +94,8 @@
                 {% endif %}
               </li>
             </ul>
-          </div>
-        </div>
+          </div>{% endcomment %}
+        </div> 
         <!-- left side blog post content -->
 
         <!-- right side bar -->

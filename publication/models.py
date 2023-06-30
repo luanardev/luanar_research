@@ -20,10 +20,12 @@ class Publication(models.Model):
     volume = models.IntegerField(blank=True, null=True)
     license = models.CharField(max_length=255)
     collection = models.CharField(max_length=255)
-    doi = models.CharField(max_length=255, unique=True)
+    doi = models.CharField(max_length=255, unique=True, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
     image_path = models.ImageField(upload_to='publication/', blank=True, null=True)
     project = models.ForeignKey(Project, on_delete=DO_NOTHING, blank=True, null=True)
+    response = models.BooleanField(blank=True,null=True)
+    reason_for_denial = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=datetime.now)
     
     def __str__(self):

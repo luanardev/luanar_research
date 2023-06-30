@@ -4,43 +4,55 @@
 
 {% block content %}
 
-	<section class="w3l-about-breadcrum">
+<section class="w3l-about-breadcrum">
 	<div class="breadcrum-bg py-sm-5 py-4">
 		<div class="container py-lg-3">
-		<h2>Researchers</h2>
-		<p><a href="{% url 'index' %}">Home</a> &nbsp; / &nbsp; Researchers</p>
+			<h2>Researchers</h2>
+			<p><a href="{% url 'index' %}">Home</a> &nbsp; / &nbsp; Researchers</p>
 		</div>
 	</div>
-	</section>
+</section>
 
-{% if page_obj  %}
-
+<section class="w3l-features-8">
+   {% if page_obj  %}	
 	<div class="features py-5" id="services">
+		
 		<div class="container py-md-3">
-		<div class="fea-gd-vv text-center row">
-				{% for author in page_obj %} 
-                   <a href="#">
-				    <div class="float-top col-lg-12 col-md-2 mt-md-0 mt-5" style="background: lavenderblush; padding: 8px; border-radius: 4px">
-                     <div style="float: left; padding: 8px; border-radius: 6px">
-						<a href="{% url 'researcher_publications' author.id %}"><img src="{% static 'assets/images/researcher_default.png' %}" class="img-responsive" alt="" width='40'></a>
-                    </div>
-                    <div style="padding: 8px">
-                        <div class="float-lt feature-gd">
-                            <p></p>
-							<h5 style="font-size: 12px"><a href="{% url 'researcher_publications' author.id %}" style="float: left"><b>{{author.first_name}} {{author.last_name}}</b></a></h5><br/>
-							<h5 style="font-size: 12px"><a href="#" style="float: left">Position: {{author.position}}</a></h5><br/>
-						</div>
-                    </div>
-						
+			<div class="row mb-3">
+			<div class="col-md-12">
+				<form class="search-form" action="{% url 'researchers_search' %}" method="get">
+					
+					<input
+						class="form-control"
+						type="search"
+						name="query"
+						placeholder="Search by name"
+						aria-label="search"
+						required=""
+					/>
+					
+				</form>
+			</div>
+		</div>
+			
+			<div class="fea-gd-vv text-center row">
+			
+			   {% for author in page_obj %}
+				<div class="float-top col-lg-3 col-md-6">	
+					<a href="#"><img src={% static 'assets/images/researcher_default.jpg' %} class="img-responsive" alt="" size="80"></a>
+					<div class="float-lt feature-gd">	
+						<h7><a href="#"><b>{{author.first_name}} {{author.last_name}}</b></a> </h7>
+						<p>{{author.position}} </p>
 					</div>
-                    </a>
-            <p style="color:aliceblue">.</p>
-				{% endfor %}	
+					<p><br></p>
+				</div>
+			   {% endfor %}					 
 			</div>  
 		</div>
 	</div>
-	<!-- pagination -->
-	{% comment %} 
+      
+</section> 
+{% comment %}
    <div class="pagination">
 		<ul>
 			<li>

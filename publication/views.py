@@ -6,13 +6,59 @@ from .models import Publication
 from project.models import Project
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views import View
+from django.db.models import Q
 import uuid
 from django.utils.html import strip_tags
-# from django.core.paginator import Paginator
+from django.core.paginator import Paginator
 from account.models import User
+from rest_framework import generics
 
 # Create your views here.
 # web
+
+def search(request):
+    query = request.GET['query']
+    results = Publication.objects.filter(
+		Q(title__icontains=query) | 
+		Q(publisher__icontains=query) |
+		Q(author__first_name__icontains=query) |
+		Q(author__last_name__icontains=query) |
+		Q(publication_type=query)  
+	)
+
+    paginator = Paginator(results,10)
+    page = request.GET.get('page')
+    paged_results = paginator.get_page(page)
+
+    context = {
+		'total_results': len(results),
+        'publications': paged_results
+    }
+    return render(request,'core/publications_results.html', context) 
+
+
+
+def search_researcher(request):
+    query = request.GET['query']
+    results = User.objects.filter(
+		Q(first_name__icontains=query) |
+		Q(last_name__icontains=query)    
+	)
+
+    paginator = Paginator(results,10)
+    page = request.GET.get('page')
+    paged_results = paginator.get_page(page)
+
+    context = {
+		'total_results': len(results),
+        'researchers': paged_results
+    }
+    return render(request,'core/researchers_results.html', context) 
+
+
+
+
+
 def index(request):
     html = '<jats:p>'
     stripped = strip_tags(html)
@@ -60,7 +106,7 @@ class PublicationDetails(DetailView):
 class ResearchersView(ListView):
     model = User
     template_name = 'core/researchers.html'
-    paginate_by = 8
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -76,22 +122,25 @@ def get_author_publications(request, author_id):
 
     return render(request,'core/researcher_publications.html', context)
     
-# Api
-class PublicationsAPIView(APIView):
+# Api views
+class PublicationsListAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        instance = Publication.objects.all()
+        instance = Publication.objects.all().filter(is_approved=True)
         data = {}
         if instance:
             data = PublicationSerializer(instance, many = True).data
         return Response(data)
     
-    # def post(self, request, *args, **kwargs):
-    #     publicaction = Publication.objects.create(
-    #         title = request.data['title'],
-    #     )
-    #     serializer = PublicationSerializer(publicaction, many =False)
-    #     return Response(serializer.data)
-publications_api_view = PublicationsAPIView.as_view()
+    def post(self, request, *args, **kwargs):
+        serializer = PublicationSerializer(data=request.data)
+        try:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        except Exception as e:
+            return Response(serializer.errors)
+
+publications_api_view = PublicationsListAPIView.as_view()
 
 class PublicationDetailsAPIView(APIView):
     def get_object(self, pk):

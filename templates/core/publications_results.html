@@ -5,38 +5,27 @@
 {% block content %}
 
 
-<section class="w3l-about-breadcrum">
-  <div class="breadcrum-bg py-sm-5 py-4">
-    <div class="container py-lg-3">
-      <h2>Publications</h2>
-      <p><a href="{% url 'index' %}">Home</a> &nbsp; / &nbsp; Publications</p>
-    </div>
-  </div>
+<section class="w3l-about-breadcrum"> 
+	<div class="breadcrum-bg py-sm-5 py-4">
+		<div class="container py-lg-3">
+			<h2>Publications</h2> 
+			<p>Search Results</p>
+			
+		</div>
+	</div>
 </section>
 
-{% if page_obj %}	
 <section class="w3l-blog-single">
 	<div class="single blog py-4">
 		<div class="container py-md-2">
-		<div class="d-grid grid-colunm-2">
+		<div class="d-grid">
 			<!-- left side blog post content -->
 			<div class="single-left">
-				<form class="form-inline search-form" action="{% url 'publications_search' %}" method="get">
-					
-					<input
-						class="form-control"
-						type="search"
-						name="query"
-						placeholder="Search by publication title or author name"
-						aria-label="search"
-						required=""
-					/>
-					<button class="btn search" type="submit">
-						<span class="fa fa-search"></span>
-					</button>
-				</form>
+			
+			<!--<p>{{total_results}} Publications</p>-->
+				
 			<div class="single-left1">
-             {% for publication in page_obj %}
+             {% for publication in publications %}
                 
                      {% comment %} <div class="column-6">
                         <img src="{% static 'assets/images/pub_default.jpg' %}" alt="" class="img-fluid">
@@ -87,9 +76,9 @@
 			<div class="pagination">
 				<ul>
 				<li>
-					{% if page_obj.has_previous %}
+					{% if publications.has_previous %}
 						<a
-						href="?page={{ page_obj.previous_page_number }}"
+						href="?page={{ publications.previous_page_number }}"
 						class="not-allowed"
 						disabled=""
 						>
@@ -101,11 +90,11 @@
 					{% endif %}
 				</li>
 				<li>
-					<a class="active" href="#"> {{ page_obj.number }} </a>
+					<a class="active" href="#"> {{ publications.number }} </a>
 				</li>
 				<li>
-					{% if page_obj.has_next %}
-						<a href="?page={{ page_obj.next_page_number }}">
+					{% if publications.has_next %}
+						<a href="?page={{ publications.next_page_number }}">
 						<span
 							class="fa fa-angle-double-right"
 							aria-hidden="true"
@@ -118,45 +107,12 @@
 			</div>
 			<!-- left side blog post content -->
 
-			<!-- right side bar -->
 			
-			<aside class="posts p-4 border">
-				<h3 class="aside-title">Categories</h3>
-				<ul class="category">
-				<li>
-					<a href="#link"
-					><span class="fa fa-angle-right"></span> Year
-					<label>(18)</label></a
-					>
-				</li>
-				<li>
-					<a href="#link"
-					><span class="fa fa-angle-right"></span> Countries
-					<label>(18)</label></a
-					>
-				</li>
-				<li>
-					<a href="#link"
-					><span class="fa fa-angle-right"></span> Authors
-					<label> (11)</label></a
-					>
-				</li>
-				<li>
-					<a href="#link"
-					><span class="fa fa-angle-right"></span> Journals
-					<label>(24)</label></a
-					>
-				</li>
-				</ul>
-			</aside>
-			</div>
-			<!-- //right side bar -->
 		</div>
 		</div>
 	</div>
-	</section>
+</section>
 	<!-- grids block 5 -->
 
-{% else %}
-{% endif %} 
+
 {% endblock %}

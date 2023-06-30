@@ -13,6 +13,8 @@ from django.utils.html import strip_tags
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import connection
+
 
 # Create your views here.
 class DashboardPageView(LoginRequiredMixin, TemplateView):
@@ -113,7 +115,7 @@ class PublicationListView(LoginRequiredMixin, ListView):
         if not self.request.user.is_authenticated:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
-
+        
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.request.user.is_authenticated:
@@ -121,6 +123,15 @@ class PublicationListView(LoginRequiredMixin, ListView):
         return queryset
         
 publication_list_view = PublicationListView.as_view()
+
+def dro_publication_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        publications = Publication.objects.filter(response__isnull=True)  # Retrieve data based on your conditions
+    else:
+        publications = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/all_publications.html', {'publications': publications})
+    
 
 
 class PublicationDetailsView(LoginRequiredMixin, DetailView):
@@ -369,3 +380,55 @@ class InnovationDetailsView(LoginRequiredMixin, DetailView):
     queryset = Innovation.objects.all()
 
 innovation_details_view = InnovationDetailsView.as_view()
+
+class ApprovePublicationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+
+        Publication.objects.filter(id=id).update(response=True, is_approved=True)
+        messages.success(self.request, 'Publication has been approved successfully')
+        return redirect('publication_list')
+
+approve_publication_view = ApprovePublicationView.as_view()
+
+class DeclinePublicationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+        reason = request.POST['reason']
+
+        Publication.objects.filter(id=id).update(response=False,reason_for_denial=reason)
+        messages.success(self.request, 'Publication declined successully')
+        return redirect('publication_list')
+
+decline_publication_view = DeclinePublicationView.as_view()
+
+
+
+def staffReport(request):
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM (SELECT account_user.id, account_user.title,  concat( first_name, ' ', last_name) AS fullname, account_user.department_code AS department_code, Count( DISTINCT project_project.id) AS projects, Count( DISTINCT publication_publication.id) AS publications, Count(DISTINCT innovation_innovation.id) AS innovations FROM account_user LEFT JOIN project_project  ON project_project.user_id =  account_user.id LEFT JOIN  publication_publication ON publication_publication.author_id = account_user.id LEFT JOIN innovation_innovation ON innovation_innovation.user_id = account_user.id  GROUP BY account_user.id) AS temp WHERE publications > 0 OR innovations > 0 OR projects > 0");
+        
+        columns = [col[0] for col in cursor.description]
+        report = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    # report = User.objects.select_related('user')
+    for i in report:
+        print(i)
+
+    return render(request, 'research/staff_report.html', {'data': report});
+
+
+
+
+def departmentReport(request):
+	 
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT account_user.department_code AS department, Count( DISTINCT project_project.id) AS projects, Count( DISTINCT publication_publication.id) AS publications, Count(DISTINCT innovation_innovation.id) AS innovations FROM account_user LEFT JOIN project_project  ON project_project.user_id =  account_user.id LEFT JOIN  publication_publication ON publication_publication.author_id = account_user.id LEFT JOIN innovation_innovation ON innovation_innovation.user_id = account_user.id WHERE (publication_publication.is_approved = TRUE OR publication_publication.id IS NULL ) AND account_user.department_code IS NOT NULL GROUP BY account_user.department_code ");
+        
+        columns = [col[0] for col in cursor.description]
+        report = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    # report = User.objects.select_related('user')
+    for i in report:
+        print(i)
+
+    return render(request, 'research/department_report.html', {'data': report});
