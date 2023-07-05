@@ -15,7 +15,6 @@ from rest_framework import generics
 
 # Create your views here.
 # web
-
 def search(request):
     query = request.GET['query']
     results = Publication.objects.filter(
@@ -36,8 +35,6 @@ def search(request):
     }
     return render(request,'core/publications_results.html', context) 
 
-
-
 def search_researcher(request):
     query = request.GET['query']
     results = User.objects.filter(
@@ -55,10 +52,6 @@ def search_researcher(request):
     }
     return render(request,'core/researchers_results.html', context) 
 
-
-
-
-
 def index(request):
     html = '<jats:p>'
     stripped = strip_tags(html)
@@ -70,7 +63,6 @@ def index(request):
     }
 
     return render(request,'core/index.html',context)
-
 
 class IndexView(ListView):
     html = '<jats:p>'
@@ -110,7 +102,7 @@ class ResearchersView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(publication__isnull=False).distinct()  # Fetch related authors
+        queryset = queryset.filter(publication__isnull=False).filter(publication__is_approved=True).distinct()  # Fetch related authors
         return queryset
 
 researchers_list_view = ResearchersView.as_view()
@@ -158,8 +150,6 @@ class PublicationDetailsAPIView(APIView):
         pass
 
 publications_details_api_view = PublicationDetailsAPIView.as_view()
-
-
 # def researchers_list_view(request):
 #     author_list = User.objects.filter(publication__isnull=False).distinct()
 #     # Retrieve all authors who have publications

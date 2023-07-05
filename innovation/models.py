@@ -17,6 +17,8 @@ class Innovation(models.Model):
     project = models.ForeignKey(Project, on_delete=DO_NOTHING, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    response = models.BooleanField(blank=True,null=True)
+    reason_for_denial = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.title}"

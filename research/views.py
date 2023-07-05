@@ -124,6 +124,30 @@ class PublicationListView(LoginRequiredMixin, ListView):
         
 publication_list_view = PublicationListView.as_view()
 
+#DRO FUNCTIONS
+#Publication DRO Functions
+#publications that needs approval by dro
+class ApprovePublicationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+
+        Publication.objects.filter(id=id).update(response=True, is_approved=True)
+        messages.success(self.request, 'Publication has been approved successfully')
+        return redirect('dro_publications')
+
+approve_publication_view = ApprovePublicationView.as_view()
+
+class DeclinePublicationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+        reason = request.POST['reason']
+
+        Publication.objects.filter(id=id).update(response=False,reason_for_denial=reason)
+        messages.success(self.request, 'Publication declined successully')
+        return redirect('dro_publications')
+
+decline_publication_view = DeclinePublicationView.as_view()
+
 def dro_publication_list_view(request):
     if request.user.is_authenticated and request.user.position == 'Dro':
         publications = Publication.objects.filter(response__isnull=True)  # Retrieve data based on your conditions
@@ -131,8 +155,115 @@ def dro_publication_list_view(request):
         publications = None  # Set data to None or handle accordingly
 
     return render(request, 'research/all_publications.html', {'publications': publications})
-    
 
+#approved publications by dro
+def approved_dro_publication_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        publications = Publication.objects.filter(response=True).filter(is_approved=True) # Retrieve data based on your conditions
+    else:
+        publications = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/approved_dro_publications.html', {'publications': publications})
+
+#Project DRO Functions
+#projects that needs dro approval
+def dro_project_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        projects = Project.objects.filter(response__isnull=True)  # Retrieve data based on your conditions
+    else:
+        projects = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/dro_projects_list.html', {'projects': projects})
+
+#approved projects by dro
+def approved_dro_project_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        projects = Project.objects.filter(response=True).filter(is_approved=True) # Retrieve data based on your conditions
+    else:
+        projects = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/approved_dro_projects.html', {'projects': projects})
+
+#waiting dro approval projects 
+def waiting_dro_approval_project_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        projects = Project.objects.filter(response__isnull=True).filter(is_approved=False) # Retrieve data based on your conditions
+    else:
+        projects = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/waiting_dro_approval.html', {'projects': projects})
+
+class ApproveProjectView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+
+        Project.objects.filter(id=id).update(response=True, is_approved=True)
+        messages.success(self.request, 'Project has been approved successfully')
+        return redirect('dro_projects')
+
+approve_project_view = ApproveProjectView.as_view()
+
+class DeclineProjectView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+        reason = request.POST['reason']
+
+        Project.objects.filter(id=id).update(response=False,reason_for_denial=reason)
+        messages.success(self.request, 'Project declined successully')
+        return redirect('dro_projects')
+
+decline_project_view = DeclineProjectView.as_view()
+
+#Innovation DRO Functions
+#innovations that needs dro approval 
+def dro_innovation_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        innovations = Innovation.objects.filter(response__isnull=True)  # Retrieve data based on your conditions
+    else:
+        innovations = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/dro_innovation_list.html', {'innovations': innovations})
+
+#approved innovations by dro
+def approved_dro_innovation_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        innovations = Innovation.objects.filter(response=True).filter(is_approved=True) # Retrieve data based on your conditions
+    else:
+        innovations = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/approved_dro_innovations.html', {'innovations': innovations})
+
+#innovations waiting dro approval 
+def waiting_dro_approval_project_list_view(request):
+    if request.user.is_authenticated and request.user.position == 'Dro':
+        innovations = Innovation.objects.filter(response__isnull=True).filter(is_approved=False) # Retrieve data based on your conditions
+    else:
+        innovations = None  # Set data to None or handle accordingly
+
+    return render(request, 'research/innovations_waiting_dro_approval.html', {'innovations': innovations})
+
+class ApproveInnovationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+
+        Innovation.objects.filter(id=id).update(response=True, is_approved=True)
+        messages.success(self.request, 'Innovation has been approved successfully')
+        return redirect('dro_projects')
+
+approve_innovation_view = ApproveInnovationView.as_view()
+
+class DeclineInnovationView(View):
+    def post(self, request, *args, **kwargs):
+        id = request.POST['id']
+        reason = request.POST['reason']
+
+        Innovation.objects.filter(id=id).update(response=False,reason_for_denial=reason)
+        messages.success(self.request, 'Innovation declined successully')
+        return redirect('dro_projects')
+
+decline_innovation_view = DeclineInnovationView.as_view()
+    
+#END OF DRO FUNCTIONS
 
 class PublicationDetailsView(LoginRequiredMixin, DetailView):
     html = '<jats:p>'
@@ -381,29 +512,6 @@ class InnovationDetailsView(LoginRequiredMixin, DetailView):
 
 innovation_details_view = InnovationDetailsView.as_view()
 
-class ApprovePublicationView(View):
-    def post(self, request, *args, **kwargs):
-        id = request.POST['id']
-
-        Publication.objects.filter(id=id).update(response=True, is_approved=True)
-        messages.success(self.request, 'Publication has been approved successfully')
-        return redirect('publication_list')
-
-approve_publication_view = ApprovePublicationView.as_view()
-
-class DeclinePublicationView(View):
-    def post(self, request, *args, **kwargs):
-        id = request.POST['id']
-        reason = request.POST['reason']
-
-        Publication.objects.filter(id=id).update(response=False,reason_for_denial=reason)
-        messages.success(self.request, 'Publication declined successully')
-        return redirect('publication_list')
-
-decline_publication_view = DeclinePublicationView.as_view()
-
-
-
 def staffReport(request):
 
     with connection.cursor() as cursor:
@@ -416,9 +524,6 @@ def staffReport(request):
         print(i)
 
     return render(request, 'research/staff_report.html', {'data': report});
-
-
-
 
 def departmentReport(request):
 	 

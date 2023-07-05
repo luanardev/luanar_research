@@ -25,6 +25,8 @@ class Project(models.Model):
     image_path = models.ImageField(upload_to='projects/', blank=True, null=True)
     created_at = models.DateTimeField(default=datetime.now)
     is_approved = models.BooleanField(default=False)
+    response = models.BooleanField(blank=True,null=True)
+    reason_for_denial = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title}"

@@ -24,7 +24,7 @@
 
                 {% if project.image_path %}
                   <div class="blg-img">
-                    <a href="#"><img src="{{project.image_path}}" alt=" " class="img-responsive img-fluid">
+                    <a href="#"><img src="{{project.image_path.url}}" alt=" " class="img-responsive img-fluid">
                     <div class="bl-top">
                       <h4>{{project.date_from}}</h4>	
                     </div></a>
@@ -46,26 +46,28 @@
               <br/>
               <hr/> 
 
+              {% if project.publication_set.exists %}
                 <div>
                   <h5><b>Related project publications</b></h5><hr/>
-                  
                       {% for publication in project.publication_set.all %}
-                            <a class="nav-link" href="{% url 'publication_details' publication.id %}">
-                              {{publication.title | truncatewords:10}}
-                            </a>
-                  
+                          <a class="nav-link" href="{% url 'publication_details' publication.id %}">
+                            {{publication.title | truncatewords:10}}
+                          </a>
                       {% endfor %}
                 </div> 
-                <hr/> <br/>
-                <div>
-                  <h5><b>Related project innovations</b></h5><hr/>
-                                      {% for innovation in project.innovation_set.all %}
-                            <a class="nav-link" href="{% url 'innovation_details' innovation.id %}">
-                              {{innovation.title | truncatewords:10}}
-                            </a>
-                 
-                      {% endfor %}
-                </div> 
+                <hr/><br/>
+                {% endif %} 
+                
+                {% if project.innovation_set.exists %}
+                  <div>
+                    <h5><b>Related project innovations</b></h5><hr/>
+                        {% for innovation in project.innovation_set.all %}
+                              <a class="nav-link" href="{% url 'innovation_details' innovation.id %}">
+                                {{innovation.title | truncatewords:10}}
+                              </a>
+                        {% endfor %}
+                  </div> 
+                {% endif %}
 
               </div>
             </div>

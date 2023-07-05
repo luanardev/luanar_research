@@ -11,6 +11,10 @@ class Event(models.Model):
     meeting_type = models.CharField(max_length=255)
     venue = models.CharField(max_length=255)
     description = models.TextField()
+    created_at = models.DateTimeField(auto_now=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    image = models.ImageField(upload_to='events/', blank=True, null=True)
 
     def __str__(self):
         return f'{self.name}'

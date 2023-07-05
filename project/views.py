@@ -26,8 +26,6 @@ def search(request):
     }
     return render(request,'core/projects_results.html', context) 
 
-
-
 # Create your views here.
 class ProjectsView(ListView):
     template_name = 'core/projects.html'
